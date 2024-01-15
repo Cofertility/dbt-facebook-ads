@@ -13,12 +13,6 @@ with base as (
 
 ),
 
-child_links as (
-
-    select * from {{ ref('fb_ad_creatives__child_links') }}
-
-),
-
 links_joined as (
 
     select
@@ -37,9 +31,6 @@ links_joined as (
         ) as url_tags
 
     from base
-    left join child_links
-        on base.id = child_links.creative_id
-
 ),
 
 parsed as (
