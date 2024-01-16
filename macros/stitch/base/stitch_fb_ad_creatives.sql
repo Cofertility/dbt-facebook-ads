@@ -20,14 +20,13 @@ links_joined as (
         id as creative_id,
 
         lower(coalesce(
-          nullif(child_link, ''),
           nullif({{ facebook_ads.nested_field('base.object_story_spec', ['link_data', 'call_to_action', 'value', 'link']) }}, ''),
           nullif({{ facebook_ads.nested_field('base.object_story_spec', ['video_data', 'call_to_action', 'value', 'link']) }}, ''),
           nullif({{ facebook_ads.nested_field('base.object_story_spec', ['link_data', 'link']) }}, '')
         )) as url,
 
         lower(coalesce(
-            nullif(url_tags, {{ dbt.split_part('url', "'?'", 2) }}), '')
+            nullif(url_tags, {{ dbt.split_part('link_url', "'?'", 2) }}), '')
         ) as url_tags
 
     from base

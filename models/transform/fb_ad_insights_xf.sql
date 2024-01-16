@@ -22,7 +22,7 @@ with ads as (
 
     select
 
-        {{ dbt_utils.generate_surrogate_key(['insights.date_day', 'insights.ad_id']) }} as id,
+        {{ dbt_utils.generate_surrogate_key(['insights.date_start', 'insights.ad_id']) }} as id,
         insights.*,
         creatives.base_url,
         creatives.url,
@@ -41,8 +41,8 @@ with ads as (
     from insights
     left outer join ads
         on insights.ad_id = ads.ad_id
-        and insights.date_day >= date_trunc('day', ads.effective_from)::date
-        and (insights.date_day < date_trunc('day', ads.effective_to)::date or ads.effective_to is null)
+        and CAST(insights.date_start AS DATE) >= CAST(date_trunc(ads.effective_from, DAY) AS DATE)
+        and (CAST(insights.date_start AS DATE) < CAST(date_trunc(ads.effective_to, DAY) AS DATE) or ads.effective_to is null)
     left outer join creatives on ads.creative_id = creatives.creative_id
     left outer join campaigns on campaigns.campaign_id = insights.campaign_id
     left outer join adsets on adsets.adset_id = insights.adset_id

@@ -9,7 +9,7 @@
 
 select
 
-    date_start::date as date_day,
+    CAST(date_start as DATE) as date_day,
     nullif(account_id,'') as account_id,
     nullif(account_name,'') as account_name,
     nullif(ad_id,'') as ad_id,
@@ -22,8 +22,6 @@ select
     frequency,
     reach,
     nullif(objective,'') as objective,
-    canvas_avg_view_percent,
-    canvas_avg_view_time,
     inline_link_clicks,
     inline_post_engagement,
     unique_inline_link_clicks
